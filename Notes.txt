@@ -1,0 +1,15 @@
+Approach and challenges
+-----------------------
+
+At first I've decided to set up some steps in order to finish the assignment.
+I've started by learning Terraform and services using python.
+The next step was to understand how to build the environment and which resources to use.
+I found several similar environments while searching through AWS and Terraform blogs and official documentation, It gave me a clearer vision on how to approach the task and which services to use in AWS.
+I've also searched on how to trigger an alert every time a pull / push action happens and learned about GitHub webhooks.
+I've decided to create a service using AWS Lambda and python, and connect it to an AWS API GW in order for it to communicate with the GitHub webhook using API, and log it to AWS CloudWatch.
+I've started to build the infrastructure using Terraform, I had several issues because I was missing some resources, I found some solutions in several reddit and stack overflow threads.
+The main issue I've faced was how to get the modified files to appear in the logs, since the pull request doesn't contain that data.
+I've found out that the payload of the push request contains the relevant data on the files, and that both the push request and pull request contains the commit SHA.
+I've also found out that after each pull request (that modifies the files) there is a push request that contains the relevant data,
+So by using python I've created a script that recieves both push and pull requests, when it gets a pull request it saves the commit SHA in an array (it may also save several commits),
+Then when the branch is merged and the push request arrives it checks if the commit SHA equals to the commits in the array, if so it gets the relevant data from the push request and prints it in the logs.
